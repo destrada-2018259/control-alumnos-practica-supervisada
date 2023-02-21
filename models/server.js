@@ -7,6 +7,7 @@ class Server{
         this.app = express();
         this.port = process.env.PORT;
         this.cursoPath = '/api/cursos'
+        this.authPath = '/api/auth'
         
         this.conectarDB();
 
@@ -26,7 +27,7 @@ class Server{
         }
         routes(){
             this.app.use(this.cursoPath, require('../routes/curso'));
-
+            this.app.use(this.authPath, require('../routes/auth'));
             
         }
         listen(){

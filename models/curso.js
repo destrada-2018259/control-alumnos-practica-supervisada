@@ -8,6 +8,14 @@ const CursoSchema = new Schema({
     descripcion:{
         type:String,
         required:[true, 'La descripcion es obligatoria']
+    },
+    maestro:{
+        type: Schema.Types.ObjectId,
+        ref:'User'
+    },
+    alumno:{
+        type: Schema.Types.ObjectId,
+        ref:'User'
     }
 });
 module.exports = model('Curso',CursoSchema);
