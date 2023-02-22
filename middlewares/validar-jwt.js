@@ -7,7 +7,6 @@ const validarJWT = async( req = request, res = response, next ) => {
 
     const token = req.header('x-token');
     
-    //Validar si el token se envia en los headers
     if ( !token ) {
         return res.status(401).json({
             msg: 'There is no token in the request header'
@@ -26,6 +25,7 @@ const validarJWT = async( req = request, res = response, next ) => {
         }
 
         req.user = user;
+        
         next();
         
     } catch (error) {

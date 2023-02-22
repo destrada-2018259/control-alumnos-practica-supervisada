@@ -33,11 +33,35 @@ const postUser = async (req = request, res = response) => {
 const putUser = async(req = request, res = response) => {
     const {id} = req.params;
     const {_id, role, ...resto} = req.body;
+    const salt = bcryptjs.genSaltSync();
+    resto.password = bcryptjs.hashSync(resto.password, salt);
     const userEditado = await User.findByIdAndUpdate(id, resto, {new: true});
     res.status(200).json({
         msg: 'User updated',
         userEditado
     })
+}
+const putMyUser = async (req = request, res = response) => {
+    const {id} = req.params;
+    const user = req.user._id;
+    const idUser = user.toString();
+
+    if (id === idUser) {
+        const {_id, role,...resto} = req.body;
+        const salt = bcryptjs.genSaltSync();
+        resto.password = bcryptjs.hashSync(resto.password, salt);
+        const userEditado = await User.findByIdAndUpdate(id, resto, {new: true});
+        res.status(200).json({
+            msg: 'User updated',
+            userEditado
+        })
+    } else{
+        res.status(401).json({
+            msg: 'Unauthorized you can only update your own account'
+
+        })
+    }
+
 }
 
 const deleteUser = async(req = request, res = response) => {
@@ -48,6 +72,26 @@ const deleteUser = async(req = request, res = response) => {
         msg: 'User deleted',
         userEliminado
     })
+}
+
+const deleteMyUser = async(req = request, res = response) => {
+    const {id} = req.params;
+    const user = req.user._id;
+    const idUser = user.toString();
+
+    if(id === idUser){
+        const userEliminado = await User.findByIdAndDelete(id);
+        res.status(200).json({
+            msg: 'User deleted',
+            userEliminado
+        })
+    }else{
+        res.status(401).json({
+            msg: 'Unauthorized you can only delete your own account'
+
+        })
+    }
+    
 }
 
 const registerUser = async (req = request, res = response) => {
@@ -66,10 +110,26 @@ const registerUser = async (req = request, res = response) => {
     })
 }
 
+const getMyCourses = async (req = request, res = response) => {
+    const user = req.user._id;
+    const cursos = req.user.cursos
+
+    res.json({
+        msg: 'Courses list',
+        cursos
+    })
+    
+}
+
+
 module.exports = {
     getUsers,
     postUser,
     putUser,
     deleteUser,
-    registerUser
+    registerUser,
+    getMyCourses,
+    deleteMyUser,
+    putMyUser
+    
 }
