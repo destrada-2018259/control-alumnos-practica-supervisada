@@ -16,7 +16,13 @@ const UserSchema = new Schema({
     role:{
         type: String,
         required: true,
-        upercase: true
+        upercase: true.valueOf,
+        default: 'ROLE_ALUMNO'
+        
+    },
+    cursos:{
+        type: Array,
+        default: []
     }
 })
 module.exports = model('User', UserSchema);

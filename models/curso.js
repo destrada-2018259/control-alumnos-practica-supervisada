@@ -13,9 +13,10 @@ const CursoSchema = new Schema({
         type: Schema.Types.ObjectId,
         ref:'User'
     },
-    alumno:{
-        type: Schema.Types.ObjectId,
-        ref:'User'
+    alumnos:{
+        type: Array,
+        default:[]
+        
     }
 });
 module.exports = model('Curso',CursoSchema);

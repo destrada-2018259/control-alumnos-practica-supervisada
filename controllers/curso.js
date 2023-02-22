@@ -22,7 +22,7 @@ const postCurso = async(req= request, res = response) =>{
     await cursoDB.save();
 
     res.status(201).json({
-        msg: 'Curso creado',
+        msg: 'Curse created',
         cursoDB
     })
 }
@@ -30,7 +30,12 @@ const postCurso = async(req= request, res = response) =>{
 const putCurso = async(req = request, res = response) =>{
     const {id} = req.params;
     const {_id, ...resto} = req.body;
-    const cursoEditado = await Curso.findByIdAndUpdate(_id, resto)
+    const cursoEditado = await Curso.findByIdAndUpdate(id, resto, {new: true});
+
+    res.status(200).json({
+        msg: 'Curse updated',
+        cursoEditado
+    })
 }
 
 const deleteCurso = async(req = request, res = response) =>{
